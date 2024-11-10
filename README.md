@@ -259,13 +259,13 @@ Lotto(테스트하기 쉬움)
   - 📂 contants
   - - 📂 delimiters
   - - - 📜 delimiters.js
-  - - 📂 flags
-  - - - 📜 flags.js
+  - - 📂 flag
+  - - - 📜 flag.js
   - - 📂 messages
   - - - 📜 convenienceStoreMessages.js
   - - - 📜 errorMessages.js
-  - - 📂 promotions
-  - - - 📜 promotionType.js
+  - - 📂 promotion
+  - - - 📜 promotion.js
   - 📂 controllers
   - - 📜 ConvenienceStoreContoller.js
   - 📂 errors
@@ -282,6 +282,7 @@ Lotto(테스트하기 쉬움)
   - - 📜 collection.js
   - - 📜 date.js
   - - 📜 loadFile.js
+  - - 📜 replacePurchaseProducts.js
   - 📂 validation
   - - 📜 InventoryValidation.js
   - - 📜 WhetherValidation.js  
@@ -291,6 +292,12 @@ Lotto(테스트하기 쉬움)
   - App.js
   - index.js
 ```
+
+## 테스트 결과
+<div style="display: flex; flex-direction: row;">
+    <img src="https://github.com/user-attachments/assets/e09c81c2-04f1-42c6-8142-7da193df2f5f" style="width: 50%;">
+    <img src="https://github.com/user-attachments/assets/d80fc0ce-f3bd-47c5-8ebf-cb2ea948f6a3" style="width: 50%;">
+</div>
 
 ## :computer: 커밋 메세지 컨벤션
 ```
