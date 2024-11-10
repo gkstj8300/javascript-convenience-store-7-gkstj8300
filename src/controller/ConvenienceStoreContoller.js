@@ -1,6 +1,9 @@
 import InventoryManagement from "../models/InventoryManagement.js";
+import Promotions from "../models/Promotions.js";
 import getLoadProducts from "../services/getLoadProducts.js";
+import getLoadPromotions from "../services/getLoadPromotions.js";
 import asyncFunction from "../utils/asyncFunction.js";
+import WhetherValidation from "../validation/WhetherValidation.js";
 import InputView from "../views/InputView.js";
 import OutputView from "../views/OutputView.js";
 
@@ -16,11 +19,17 @@ class ConvenienceStoreContoller {
      */    
     #purchaseProducts;
 
+    /**
+     * @type { Array } 프로모션 적용 상품 목록
+     */      
+    #promotionProducts;
+
     async convenienceStoreRun() {
         this.#printStartMessage();
         await asyncFunction(this.#getProducts, this);
         this.#printProductsList();
         await asyncFunction(this.#getPurchaseProducts, this);
+        await asyncFunction(this.#getPromotionProducts, this);
     }
 
     #printStartMessage() {
@@ -46,6 +55,25 @@ class ConvenienceStoreContoller {
         this.#purchaseProducts = inventoryManagement.getPurchaseProducts();
         OutputView.outputPrintEmptyLine();
     }
+
+    async #getPromotionProducts() {
+        const loadPromotions = await getLoadPromotions();
+        const promotions = new Promotions(loadPromotions);
+        const promotionResults = promotions.getIsPromotionProducts(this.#products, this.#purchaseProducts);
+        if(promotionResults.length > 0) {
+            this.#getWhetherResult(promotions, promotionResults);
+        }
+        this.#promotionProducts = promotions.getFilterPromotionProducts(this.#products, this.#purchaseProducts);
+    }
+
+    async #getWhetherResult(promotions, promotionResults) {
+        for (const result of promotionResults) {
+            const INPUT_WHETHER_RESULT = await InputView.inputReadLineWhetherResult(result);
+            WhetherValidation.whetherValidate(INPUT_WHETHER_RESULT);
+            this.#purchaseProducts = promotions.updatePurchaseProductsByPromotion(this.#purchaseProducts, result, INPUT_WHETHER_RESULT);
+            OutputView.outputPrintEmptyLine();
+        }
+    }    
 }
 
 export default ConvenienceStoreContoller;
