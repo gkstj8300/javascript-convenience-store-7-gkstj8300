@@ -61,7 +61,7 @@ class ConvenienceStoreContoller {
         const promotions = new Promotions(loadPromotions);
         const promotionResults = promotions.getIsPromotionProducts(this.#products, this.#purchaseProducts);
         if(promotionResults.length > 0) {
-            this.#getWhetherResult(promotions, promotionResults);
+            await this.#getWhetherResult(promotions, promotionResults);
         }
         this.#promotionProducts = promotions.getFilterPromotionProducts(this.#products, this.#purchaseProducts);
     }
