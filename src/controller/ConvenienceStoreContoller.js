@@ -24,12 +24,18 @@ class ConvenienceStoreContoller {
      */      
     #promotionProducts;
 
+    /**
+     * @type { Boolean } 멤버쉽 할인 적용 여부
+     */
+    #isMembership;
+
     async convenienceStoreRun() {
         this.#printStartMessage();
         await asyncFunction(this.#getProducts, this);
         this.#printProductsList();
         await asyncFunction(this.#getPurchaseProducts, this);
         await asyncFunction(this.#getPromotionProducts, this);
+        await asyncFunction(this.#getIsMembership, this);
     }
 
     #printStartMessage() {
@@ -74,6 +80,12 @@ class ConvenienceStoreContoller {
             OutputView.outputPrintEmptyLine();
         }
     }    
+
+    async #getIsMembership() {
+        this.#isMembership = await InputView.inputReadLineIsMembership();
+        WhetherValidation.whetherValidate(this.#isMembership);
+        OutputView.outputPrintEmptyLine();
+    }
 }
 
 export default ConvenienceStoreContoller;

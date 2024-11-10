@@ -17,6 +17,10 @@ const InputView = {
         }
         return Console.readLineAsync(CONVENIENCE_STORE_MESSAGES.input_whether_promotion_plus(productName));
     },
+
+    async inputReadLineIsMembership() {
+        return await Console.readLineAsync(CONVENIENCE_STORE_MESSAGES.input_is_membership);
+    },
 }
 
 export default InputView;
