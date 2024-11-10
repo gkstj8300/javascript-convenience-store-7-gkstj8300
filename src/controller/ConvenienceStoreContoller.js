@@ -1,5 +1,6 @@
 import InventoryManagement from "../models/InventoryManagement.js";
 import Promotions from "../models/Promotions.js";
+import Receipt from "../models/Receipt.js";
 import getLoadProducts from "../services/getLoadProducts.js";
 import getLoadPromotions from "../services/getLoadPromotions.js";
 import asyncFunction from "../utils/asyncFunction.js";
@@ -36,6 +37,7 @@ class ConvenienceStoreContoller {
         await asyncFunction(this.#getPurchaseProducts, this);
         await asyncFunction(this.#getPromotionProducts, this);
         await asyncFunction(this.#getIsMembership, this);
+        this.#printReceipt();
     }
 
     #printStartMessage() {
@@ -84,6 +86,18 @@ class ConvenienceStoreContoller {
     async #getIsMembership() {
         this.#isMembership = await InputView.inputReadLineIsMembership();
         WhetherValidation.whetherValidate(this.#isMembership);
+        OutputView.outputPrintEmptyLine();
+    }
+
+    #printReceipt() {
+        const receipt = new Receipt(this.#products, this.#purchaseProducts, this.#promotionProducts, this.#isMembership);
+        const amount = receipt.getReceiptAmount();
+        const totalQuantity = receipt.getTotalQuantity();
+        OutputView.outputPrintReceiptHeader();
+        OutputView.outputPrintReceipPurcheseProduct(this.#purchaseProducts);
+        OutputView.outputPrintReceipPromotionPresent();
+        OutputView.outputPrintReceipPromotionProducts(this.#promotionProducts);
+        OutputView.outputPrintReceipAmount(amount, totalQuantity);
         OutputView.outputPrintEmptyLine();
     }
 }
