@@ -21,6 +21,10 @@ const InputView = {
     async inputReadLineIsMembership() {
         return await Console.readLineAsync(CONVENIENCE_STORE_MESSAGES.input_is_membership);
     },
+
+    async inputReadLineAdditionalPurchase() {
+        return await Console.readLineAsync(CONVENIENCE_STORE_MESSAGES.input_additional_purchase);
+    }
 }
 
 export default InputView;

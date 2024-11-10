@@ -5,6 +5,7 @@ import getLoadProducts from "../services/getLoadProducts.js";
 import getLoadPromotions from "../services/getLoadPromotions.js";
 import asyncFunction from "../utils/asyncFunction.js";
 import WhetherValidation from "../validation/WhetherValidation.js";
+import FLAG from "../constants/flag/flag.js";
 import InputView from "../views/InputView.js";
 import OutputView from "../views/OutputView.js";
 
@@ -38,6 +39,7 @@ class ConvenienceStoreContoller {
         await asyncFunction(this.#getPromotionProducts, this);
         await asyncFunction(this.#getIsMembership, this);
         this.#printReceipt();
+        await asyncFunction(this.#printAdditionalPurchase, this);
     }
 
     #printStartMessage() {
@@ -99,6 +101,20 @@ class ConvenienceStoreContoller {
         OutputView.outputPrintReceipPromotionProducts(this.#promotionProducts);
         OutputView.outputPrintReceipAmount(amount, totalQuantity);
         OutputView.outputPrintEmptyLine();
+    }
+
+    async #printAdditionalPurchase() {
+        const INPUT_WHETHER_RESULT = await InputView.inputReadLineAdditionalPurchase();
+        WhetherValidation.whetherValidate(INPUT_WHETHER_RESULT);
+        if (INPUT_WHETHER_RESULT === FLAG.TRUE) {
+            this.#updateProducts();
+            await this.convenienceStoreRun();
+        }
+    }
+
+    #updateProducts() {
+        const inventoryManagement = new InventoryManagement(this.#products, this.#purchaseProducts);
+        this.#products = inventoryManagement.updateProducts();
     }
 }
 
