@@ -253,6 +253,104 @@ Lotto(테스트하기 쉬움)
 - [X] 구매 상품 내역, 증정 상품 내역, 금액 정보를 출력한다.
 - [X] 추가 구매 여부를 확인하기 위해 안내 문구를 출력한다.
 
+## :memo: 기능 구현 순서
+
+### 1. 환영 인사와 보유 상품 목록을 출력한다.
+* 상품 목록의 경우 public/products.md 파일을 이용하여 출력한다.
+```
+안녕하세요. W편의점입니다.
+현재 보유하고 있는 상품입니다.
+- 콜라 1,000원 10개 탄산2+1
+- 콜라 1,000원 10개
+- 사이다 1,000원 8개 탄산2+1
+- 사이다 1,000원 7개
+- 오렌지주스 1,800원 9개 MD추천상품
+- 오렌지주스 1,800원 재고 없음
+- 탄산수 1,200원 5개 탄산2+1
+- 탄산수 1,200원 재고 없음
+.....
+```
+### 2. 사용자에게 구매할 상품명과 수량을 입력받는다.
+* 상품명, 수량은 하이픈(-)으로, 개별 상품은 대괄호([])로 묶어 쉼표(,)로 구분한다.
+```
+구매하실 상품명과 수량을 입력해 주세요. (예: [사이다-2],[감자칩-1])
+```
+<img width="400" alt="input_purchase_1" src="https://github.com/user-attachments/assets/2a696c2d-d68d-47b8-91c2-e0dd9effa35f">
+<img width="400" alt="input_purchase_2" src="https://github.com/user-attachments/assets/ac12a964-54c0-4bae-8a72-9e2fc39c568b">
+
+#### 예외처리
+```
+- 형식이 올바르지 않을 경우 '[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.'
+- 존재하지 않는 상품일 경우 '[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.'
+- 공백일 경우 '[ERROR] 입력값이 공백입니다. 다시 입력해 주세요.'
+- 재고 수량을 초과한 경우 '[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.'
+- 기타 잘못된 입력의 경우 '[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.'
+```
+
+### 3. 프로모션 적용 여부를 파악하며 'Y or 'N'을 입력받는다.
+* 프로모션 목록의 경우 public/promotions.md 파일을 이용한다.
+
+#### 3-1) 프로모션 적용이 가능한 상품에 대해 고객이 해당 수량보다 적게 가져온 경우
+```
+현재 사이다은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)
+```
+<img width="450" alt="input_promotion_1" src="https://github.com/user-attachments/assets/42e92fb8-4712-4a05-84a9-6dff5589adcd">
+
+* Y: 증정 받을 수 있는 상품을 추가한다.
+* N: 증정 받을 수 있는 상품을 추가하지 않는다.
+
+#### 3-2) 프로모션 재고가 부족하여 일부 수량을 프로모션 혜택 없이 결제해야 하는 경우
+```
+구매하실 상품명과 수량을 입력해 주세요. (예: [사이다-2],[감자칩-1])
+[사이다-9]
+
+현재 사이다 3개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)
+```
+<img width="300" alt="input_promotion_2" src="https://github.com/user-attachments/assets/9636a0b7-e3f8-485c-b536-404020946ee5">
+
+* Y: 일부 수량에 대해 정가로 결제한다.
+* N: 정가로 결제해야하는 수량만큼 제외한 후 결제를 진행한다.
+
+### 4. 멤버쉽 할인 적용 여부를 파악하며 'Y or 'N'을 입력받는다.
+```
+멤버십 할인을 받으시겠습니까? (Y/N)
+```
+<img width="400" alt="input_membership_1" src="https://github.com/user-attachments/assets/c87de22a-2fb7-436f-be73-3585726375a2">
+
+
+* Y: 멤버십 할인을 적용한다.
+* N: 멤버십 할인을 적용하지 않는다.
+
+### 5. 구매 상품 내역, 증정 상품 내역, 금액 정보를 출력한다.
+```
+==============W 편의점================
+상품명		수량	금액
+콜라		3 	3,000
+에너지바 		5 	10,000
+=============증	정===============
+콜라		1
+====================================
+총구매액		8	13,000
+행사할인			-1,000
+멤버십할인			-3,000
+내실돈			 9,000
+```
+
+### 6. 추가 구매 여부를 확인하기 위해 안내 문구를 출력한다.
+```
+감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)
+```
+<img width="300" alt="input_result_1" src="https://github.com/user-attachments/assets/9b6ae20b-7bbc-4bb3-a32a-0e9d5c543344">
+
+#### 3번, 4번, 6번 'Y or 'N' 입력값에 대한 예외처리
+```
+- Y혹은 N이 아닌 다른 값일 경우 '[ERROR] 입력값은 Y혹은 N을 입력하여야 합니다.'
+- 공백일 경우 '[ERROR] 입력값이 공백입니다. 다시 입력해 주세요.'
+- 소문자를 입력했을 경우 '[ERROR] 입력값은 대문자여야 합니다.'
+- 'YN', 'YY' 등 잘못된 조합을 입력했을 경우 '[ERROR] 입력값은 Y혹은 N을 입력하여야 합니다.'
+- 특수문자를 입력했을 경우 '[ERROR] 입력값은 Y혹은 N을 입력하여야 합니다.'
+```
+
 ## :file_folder: 패키지 구조 및 파일명
 ```
 - src
@@ -293,10 +391,93 @@ Lotto(테스트하기 쉬움)
   - index.js
 ```
 
+### ConvenienceStoreContoller.js [편의점 미션의 메인이 되는 클래스]
+* convenienceStoreRun
+- 편의점 미션의 전체적인 프로세스를 담당하는 함수입니다.
+* printStartMessage
+- 사용자에게 환영 인사를 출력합니다.
+* getProducts
+- products.md 파일에 있는 상품 목록을 받아 this.#products에 할당합니다. 추가로 재시작을 할 경우에는 실행되지 않습니다.
+* printProductsList
+- 사용자에게 상품명, 가격, 프로모션 이름, 재고를 출력합니다.
+* getPurchaseProducts
+- 사용자에게 구매할 상품명, 갯수를 입력받아 예외처리를 진행하고 this.#purchaseProducts 할당합니다.
+* getPromotionProducts
+- promotions.md 파일에 있는 프로모션 목록을 받아 구매한 상품 목록과 비교하여 프로모션이 적용되는 상품 목록을 this.#promotionProducts에 할당합니다.
+* getWhetherResult
+- this.#promotionProducts 데이터를 이용하여 프로모션 적용 여부를 사용자로부터 입력받아 값을 update 합니다.
+* getIsMembership
+- 사용자에게 멤버쉽 할인 여부를 입력받아 예외처리 후 this.#isMembership에 할당합니다.
+* getReceipt
+- 구매 상품 내역, 증정 상품 내역, 금액 정보를 계산합니다.
+* printReceipt
+- 계산된 정보(영수증)를 사용자에게 출력합니다.
+* printAdditionalPurchase
+- 사용자에게 추가 구매 여부를 입력받아 예외처리 후 프로그램 재시작 및 종료합니다.
+
+### InventoryManagement.js [편의점 재고 클래스]
+* getPurchaseProducts
+- 구매 상품 목록에 가격 정보를 추가하여 반환합니다.
+* updateProducts
+- 구매처리를 완료한 후 재고를 업데이트합니다.
+* inventoryValidate
+- 입력한 구매상품의 예외처리를 진행합니다.
+* addPricesToPurchases
+- 구매한 상품 객체에 가격을 맵핑하여 추가합니다.
+* findProductByName
+- 구매한 상품의 이름을 통해 상품 데이터를 조회합니다.
+* processPurchase
+- 일반상품, 프로모션 상품을 구분하여 갯수를 조회합니다.
+* updateProductQuantity
+- 구매를 통해 이루어진 상품의 재고를 업데이트합니다.
+* findMatchingProducts
+- 상품목록 중 프로모션이 있는 상품만 필터링합니다.
+
+### Promotions.js [프로모션 클래스]
+* getIsPromotionProducts
+- 구매 상품 중 프로모션 적용이 필요한 상품들을 필터링합니다.
+* getFilterPromotionProducts
+- 프로모션이 적용된 최종 상품 목록을 생성합니다.
+* updatePurchaseProductsByPromotion
+- 프로모션 적용 결과에 따라 구매 상품 목록을 업데이트합니다.
+* calculateFilteredProduct
+- 프로모션이 적용된 상품의 갯수를 조회하여 객체로 반환합니다.
+* applyPromotionUpdate
+- 프로모션 타입을 조회하여 이에 해당하는 값을 반환합니다.
+Type:1 = discount, Type:2 = plus
+* processPromotionProduct
+- 상품의 프로모션 적용 가능 여부를 검증하고 결과를 계산합니다.
+* determinePromotionResult
+- 프로모션 적용 조건을 확인하고 결과를 결정합니다.
+* calculateExcessQuantity
+- 초과 구매 수량을 계산합니다.
+
+### Receipt.js [영수증 클래스]
+* getReceiptAmount
+- 영수증에 들어갈 총액, 할인액, 정상가 상품 금액, 멤버십 할인액, 최종 금액을 계산하여 객체로 반환합니다.
+* getTotalQuantity
+- 구매한 모든 상품의 수량을 계산하여 반환합니다.
+* calculateAmounts
+- 정상가 상품과 프로모션 상품의 총 금액을 계산하여 반환합니다.
+* getDiscountAmount
+- 프로모션으로 인한 총 할인 금액을 계산하여 반환합니다.
+* getMembershipDiscount
+- 정상가 상품에 대해서만 멤버십 할인 금액을 계산하여 반환합니다.
+
+### getLoadProducts.js [상품 목록 불러오기 함수]
+- products.md 파일을 불러온 후 값을 형식에 따라 수정한 후 반환합니다.
+
+### getLoadPromotions.js [프로모션 목록 불러오기 함수]
+- promotions.md 파일을 불러온 후 값을 형식에 따라 수정한 후 반환합니다.
+
+### InventoryValidation.js [재고 관련 예외처리 클래스]
+
+### WhetherValidation.js ['Y or N' 입력값 예외처리 클래스]
+
 ## 테스트 결과
 <div style="display: flex; flex-direction: row;">
-    <img src="https://github.com/user-attachments/assets/e09c81c2-04f1-42c6-8142-7da193df2f5f" style="width: 50%;">
-    <img src="https://github.com/user-attachments/assets/d80fc0ce-f3bd-47c5-8ebf-cb2ea948f6a3" style="width: 50%;">
+    <img src="https://github.com/user-attachments/assets/e09c81c2-04f1-42c6-8142-7da193df2f5f" style="width: 400px;">
+    <img src="https://github.com/user-attachments/assets/d80fc0ce-f3bd-47c5-8ebf-cb2ea948f6a3" style="width: 400px;">
 </div>
 
 ## :computer: 커밋 메세지 컨벤션
