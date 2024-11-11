@@ -4,6 +4,8 @@ import { isDateInRange } from "../utils/date.js";
 class Receipt {
     // 멤버십 할인율 (30%)
     static MEMBERSHIP_DISCOUNT_RATE = 0.3;
+    // 멤버십 할인 최대 한도
+    static MEMBERSHIP_MAX_AMOUNT = 8000;
 
     /**
      * @type { Object[] } 상품 목록
@@ -97,7 +99,11 @@ class Receipt {
      */    
     #getMembershipDiscount(regularAmount) {
         if(this.#isMembership === FLAG.TRUE) {
-            return Math.floor(regularAmount * Receipt.MEMBERSHIP_DISCOUNT_RATE);
+            const membershipAmount = Math.floor(regularAmount * Receipt.MEMBERSHIP_DISCOUNT_RATE);
+            if(membershipAmount >= Receipt.MEMBERSHIP_MAX_AMOUNT) {
+                return Receipt.MEMBERSHIP_MAX_AMOUNT;
+            }
+            return membershipAmount;
         }
         return 0;
     }
