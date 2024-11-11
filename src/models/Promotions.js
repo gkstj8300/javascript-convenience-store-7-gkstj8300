@@ -74,7 +74,8 @@ class Promotions {
     #applyPromotionUpdate(products, index, result, inputResult) {
         if (this.#isDiscountRemoval(result.whetherFlag, inputResult)) {
             products.splice(index, 1);
-        } else if (this.#isPlusIncrease(result.whetherFlag, inputResult)) {
+        } 
+        if (this.#isPlusIncrease(result.whetherFlag, inputResult)) {
             this.#incrementQuantity(products, index);
         }
         return products;

@@ -38,7 +38,7 @@ class ConvenienceStoreContoller {
         await asyncFunction(this.#getPurchaseProducts, this);
         await asyncFunction(this.#getPromotionProducts, this);
         await asyncFunction(this.#getIsMembership, this);
-        this.#printReceipt();
+        this.#getReceipt();
         await asyncFunction(this.#printAdditionalPurchase, this);
     }
 
@@ -91,10 +91,14 @@ class ConvenienceStoreContoller {
         OutputView.outputPrintEmptyLine();
     }
 
-    #printReceipt() {
+    #getReceipt() {
         const receipt = new Receipt(this.#products, this.#purchaseProducts, this.#promotionProducts, this.#isMembership);
         const amount = receipt.getReceiptAmount();
         const totalQuantity = receipt.getTotalQuantity();
+        this.#printReceipt(amount, totalQuantity);
+    }
+
+    #printReceipt(amount, totalQuantity) {
         OutputView.outputPrintReceiptHeader();
         OutputView.outputPrintReceipPurcheseProduct(this.#purchaseProducts);
         OutputView.outputPrintReceipPromotionPresent();

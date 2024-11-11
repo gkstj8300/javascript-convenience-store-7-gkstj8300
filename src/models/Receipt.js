@@ -61,7 +61,7 @@ class Receipt {
      * @private
      */    
     #calculateAmounts() {
-        const amounts = this.#purchaseProducts.reduce((acc, [productName, quantity]) => {
+        return this.#purchaseProducts.reduce((acc, [productName, quantity]) => {
             const product = this.#products.find(p => p.name === productName);
             const amount = this.#getProductAmount(product.price, quantity);
             return {
@@ -69,7 +69,6 @@ class Receipt {
                 regularAmount: acc.regularAmount + (product.promotion ? 0 : amount)
             };
         }, { totalAmount: 0, regularAmount: 0 });
-        return amounts;
     }
 
     #getProductAmount(price, quantity) {
