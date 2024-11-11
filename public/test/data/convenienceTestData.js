@@ -67,8 +67,8 @@ export const convenienceExpectedData = [
         expectedIgnoringWhiteSpaces: [
             "총구매액2866,200",
             "행사할인-3,000",
-            "멤버십할인-16,860",
-            "내실돈46,340",
+            "멤버십할인-8,000",
+            "내실돈55,200",
         ]
     },
     {
