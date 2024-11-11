@@ -51,7 +51,9 @@ class Promotions {
 
     #createFilteredProduct(products, productName, quantity) {
         const product = this.#findPromotionProduct(products, productName);
-        if(!product) return;
+        if(!product) {
+            return;
+        };
         
         const promotion = this.#findPromotion(product.promotion);
         return this.#calculateFilteredProduct(promotion, productName, quantity, product);
