@@ -474,10 +474,11 @@ Type:1 = discount, Type:2 = plus
 
 ### WhetherValidation.js ['Y or N' 입력값 예외처리 클래스]
 
-## 테스트 결과
+## :test_tube: 테스트 결과
 <div style="display: flex; flex-direction: row;">
     <img src="https://github.com/user-attachments/assets/e09c81c2-04f1-42c6-8142-7da193df2f5f" style="width: 400px;">
     <img src="https://github.com/user-attachments/assets/d80fc0ce-f3bd-47c5-8ebf-cb2ea948f6a3" style="width: 400px;">
+    <img src="https://github.com/user-attachments/assets/68024ebd-38d7-4b60-b34a-513919162896" style="width: 800px;">
 </div>
 
 ## :computer: 커밋 메세지 컨벤션
